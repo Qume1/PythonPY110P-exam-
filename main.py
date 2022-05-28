@@ -16,9 +16,9 @@ def title():
     while True:
         with open(filename, "r", encoding="utf-8") as file:
             for line in file:
-                titlelist = file.read().splitlines()
-                randomtitle_ = random.choice(titlelist)
-                yield randomtitle_
+                titlist = file.read().splitlines()
+                entitle_ = random.choice(titlist)
+                yield entitle_
 
 
 def year():
@@ -56,8 +56,8 @@ def author():
     while True:
         name = []
         fake = Faker(["ru_RU"])
-        authornum = (random.randint(1, 3))
-        for i in range(authornum):
+        numerate = (random.randint(1, 3))
+        for item in range(numerate):
             name.append(fake.name())
         yield name
 
@@ -87,6 +87,8 @@ if __name__ == "__main__":
                 "author": next(authordict_)
             }
         }
+
         bookjsofull.append(book)
+
     with open(bookjson, "w", encoding="utf-8") as f:
         json.dump(bookjsofull, f, indent=4, ensure_ascii=False)

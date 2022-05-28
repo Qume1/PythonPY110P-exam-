@@ -1,6 +1,8 @@
 import json
-from faker import Faker
 import random
+
+from faker import Faker
+
 from conf import MODEL
 
 
@@ -73,6 +75,7 @@ if __name__ == "__main__":
     ratingdict_ = rating()
     pricedict_ = price()
     authordict_ = author()
+
     for i in range(100):
         book = {
             "model": MODEL,

@@ -15,83 +15,75 @@ def pk(start=1):
 
 def title():
     filename = "books.txt"
-    while True:
-        with open(filename, "r", encoding="utf-8") as file:
-            for line in file:
-                titlist = file.read().splitlines()
-                entitle_ = random.choice(titlist)
-                yield entitle_
+    with open(filename, "r", encoding="utf-8") as file:
+        for line in file:
+            titlist = file.read().splitlines()
+            entitle_ = random.choice(titlist)
+            return entitle_
 
 
 def year():
-    while True:
-        year_ = random.randint(1930, 2022)
-        yield year_
+
+    year_ = random.randint(1930, 2022)
+    return year_
 
 
 def pages():
-    while True:
-        pages_ = random.randint(20, 2400)
-        yield pages_
+    pages_ = random.randint(20, 2400)
+    return pages_
 
 
 def isbn13():
     fake = Faker()
-    while True:
-        book_num = fake.isbn13()
-        yield book_num
+    book_num = fake.isbn13()
+    return book_num
 
 
 def rating():
-    while True:
-        rating_ = random.randint(0, 5)
-        yield rating_
+
+    rating_ = random.randint(0, 5)
+    return rating_
 
 
 def price():
-    while True:
-        price_ = float(random.randint(200, 5000))
-        yield price_
+
+    price_ = float(random.randint(200, 5000))
+    return price_
 
 
 def author():
+
+    name = []
+    fake = Faker(["ru_RU"])
+    numerate = (random.randint(1, 3))
+    for item in range(numerate):
+        name.append(fake.name())
+    return name
+
+
+def booksgenerator():
+    pk_ = pk()
     while True:
-        name = []
-        fake = Faker(["ru_RU"])
-        numerate = (random.randint(1, 3))
-        for item in range(numerate):
-            name.append(fake.name())
-        yield name
+        book = {
+            "model": MODEL,
+            "pk": next(pk_),
+            "fields": {
+                "title": title(),
+                "year": year(),
+                "pages": pages(),
+                "isbn13": isbn13(),
+                "rating": rating(),
+                "price": price(),
+                "author": author()
+            }
+        }
+        yield book
 
 
 if __name__ == "__main__":
     bookjson = "books.json"
-    bookjsofull = []
-    pkdict_ = pk()
-    titledict_ = title()
-    yeardict_ = year()
-    pagesdict_ = pages()
-    isbn13dict_ = isbn13()
-    ratingdict_ = rating()
-    pricedict_ = price()
-    authordict_ = author()
-
-    for i in range(100):
-        book = {
-            "model": MODEL,
-            "pk": next(pkdict_),
-            "fields": {
-                "title": next(titledict_),
-                "year": next(yeardict_),
-                "pages": next(pagesdict_),
-                "isbn13": next(isbn13dict_),
-                "rating": next(ratingdict_),
-                "price": next(pricedict_),
-                "author": next(authordict_)
-            }
-        }
-
-        bookjsofull.append(book)
+    book_ = booksgenerator()
+    booklist = [next(book_) for i in range(100)]
 
     with open(bookjson, "w", encoding="utf-8") as f:
-        json.dump(bookjsofull, f, indent=4, ensure_ascii=False)
+        json.dump(booklist, f, indent=4, ensure_ascii=False)
